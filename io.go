@@ -5,6 +5,24 @@ import (
 	"time"
 )
 
+func TampilkanPertanyaan() {
+	pertanyaan := []string{
+		"Seberapa sering Anda merasa cemas/khawatir berlebihan (1-5)?",
+		"Seberapa sering mengalami kesulitan tidur (1-5)?",
+		"Seberapa sering kehilangan minat pada aktivitas (1-5)?",
+		"Seberapa sering kesulitan berkonsentrasi (1-5)?",
+		"Seberapa sering merasa sedih/putus asa (1-5)?",
+	}
+
+	fmt.Println("\n=== ASSESSMENT KESEHATAN MENTAL ===")
+	fmt.Println("Skala: 1(Tidak pernah) - 5(Selalu)")
+	fmt.Println("================================")
+
+	for i, p := range pertanyaan {
+		fmt.Printf("%d. %s\n", i+1, p)
+	}
+}
+
 func InputJawabanKuesioner(jumlahPertanyaan int) []int {
 	jawaban := make([]int, jumlahPertanyaan)
 	for i := 0; i < jumlahPertanyaan; i++ {
@@ -15,7 +33,7 @@ func InputJawabanKuesioner(jumlahPertanyaan int) []int {
 			fmt.Scan(&input)
 			if input >= 1 && input <= 5 {
 				jawaban[i] = input
-				inputValid = true // Keluar dari loop saat input valid
+				inputValid = true
 			} else {
 				fmt.Println("Error: Masukkan angka 1-5")
 			}
