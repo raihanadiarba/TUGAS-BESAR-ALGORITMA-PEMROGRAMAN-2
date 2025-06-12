@@ -57,34 +57,32 @@ func main() {
 
 		case 2:
 			var idAssessment, idUser string
-			fmt.Print("\n=> ")
-			fmt.Print("Masukkan ID Assessment yang ingin diubah: ")
+			fmt.Print("\n=> Masukkan ID Assessment yang ingin diubah: ")
 			fmt.Scan(&idAssessment)
-			fmt.Print("\n=> ")
-			fmt.Print("Masukkan ID User: ")
+			fmt.Print("\n=> Masukkan ID User: ")
 			fmt.Scan(&idUser)
 
 			assessmentPtr, found := UbahAssessment(&dataAssessment, idAssessment, idUser)
 			if !found {
-				break
+				fmt.Println("Assessment tidak ditemukan atau tidak sesuai dengan user.")
+			} else {
+				var tanggalStr string
+				fmt.Print("\n=> Masukkan Tanggal Baru (dd-mm-yyyy): ")
+				fmt.Scan(&tanggalStr)
+				tanggal := FormatTanggal(tanggalStr)
+
+				TampilkanPertanyaan()
+				jawaban := InputJawabanKuesioner(jumlahPertanyaan)
+				skorTotal := HitungTotalSkor(jawaban)
+
+				assessmentPtr.Tanggal = tanggal
+				assessmentPtr.Jawaban = jawaban
+				assessmentPtr.SkorTotal = skorTotal
+
+				fmt.Printf("\nSkor Total: %d\n", skorTotal)
+				fmt.Println("Rekomendasi:", Rekomendasi(skorTotal))
+				fmt.Println("Assessment berhasil diubah!")
 			}
-
-			var tanggalStr string
-			fmt.Print("\n=> ")
-			fmt.Print("Masukkan Tanggal Baru (dd-mm-yyyy): ")
-			fmt.Scan(&tanggalStr)
-			tanggal := FormatTanggal(tanggalStr)
-
-			TampilkanPertanyaan()
-			jawaban := InputJawabanKuesioner(jumlahPertanyaan)
-			skorTotal := HitungTotalSkor(jawaban)
-
-			assessmentPtr.Tanggal = tanggal
-			assessmentPtr.Jawaban = jawaban
-			assessmentPtr.SkorTotal = skorTotal
-
-			fmt.Printf("Skor Total: %d\n", skorTotal)
-			fmt.Println("Rekomendasi:", Rekomendasi(skorTotal))
 
 		case 3:
 			var idAssessment, idUser string
@@ -161,7 +159,7 @@ func main() {
 				for _, a := range hasil {
 					fmt.Printf("ID: %s | Tanggal: %s | Skor: %d\n",
 						a.IDAssessment,
-						a.Tanggal.Format("02-01-2006"),
+						a.Tanggal.Format("01-01-2025"),
 						a.SkorTotal)
 					fmt.Println("Rekomendasi:", Rekomendasi(a.SkorTotal))
 					fmt.Println("------------------------------")
@@ -179,7 +177,7 @@ func main() {
 			} else {
 				skor := hasil[len(hasil)-1].SkorTotal
 				fmt.Println("\nAssessment Terakhir:")
-				fmt.Printf("Tanggal: %s\n", hasil[len(hasil)-1].Tanggal.Format("02-01-2006"))
+				fmt.Printf("Tanggal: %s\n", hasil[len(hasil)-1].Tanggal.Format("01-01-2025"))
 				fmt.Printf("Skor: %d\n", skor)
 				fmt.Println("Rekomendasi:", Rekomendasi(skor))
 			}
@@ -199,18 +197,5 @@ func main() {
 		default:
 			fmt.Println("\nPilihan tidak valid. Silakan coba lagi.")
 		}
-	}
-}
-
-func TampilkanSemuaAssessment(data []Assessment) {
-	for i, a := range data {
-		fmt.Printf("%d. ID: %s | User: %s | Tanggal: %s | Skor: %d\n",
-			i+1,
-			a.IDAssessment,
-			a.IDUser,
-			a.Tanggal.Format("02-01-2006"),
-			a.SkorTotal)
-		fmt.Println("   Rekomendasi:", Rekomendasi(a.SkorTotal))
-		fmt.Println("------------------------------")
 	}
 }

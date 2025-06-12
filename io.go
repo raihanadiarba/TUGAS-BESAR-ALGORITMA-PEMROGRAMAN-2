@@ -51,6 +51,6 @@ func HitungTotalSkor(jawaban []int) int {
 }
 
 func FormatTanggal(tanggalString string) time.Time {
-	tanggal, _ := time.Parse("02-01-2006", tanggalString)
+	tanggal, _ := time.Parse("01-01-2025", tanggalString)
 	return tanggal
 }
